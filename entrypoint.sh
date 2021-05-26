@@ -1,33 +1,31 @@
 #!/bin/sh
 
 BACKUP_CMD="/sbin/su-exec ${UID}:${GID} /app/backup.sh"
-
-echo "Running $(basename "$0") as $(id)"
+LOGS_FILE="/app/log/backup.log"
 
 # Run backup script once ($1 = First argument passed).
 if [ "$1" = "manual" ]; then
+  echo "[INFO] Running one-time, started at $(date +"%F %r")."
   $BACKUP_CMD
   exit 0
 fi
 
-# Initialize cron
+# Create cron jobs.
 if [ "$(id -u)" -eq 0 ] && [ "$(grep -c "$BACKUP_CMD" "$CRONFILE")" -eq 0 ]; then
-  echo "Initalizing..."
-  echo "Writing backup command \"$BACKUP_CMD\" to cron."
-  echo "$CRON_TIME $BACKUP_CMD >> $LOGFILE 2>&1" | crontab -
+  echo "$CRON_TIME $BACKUP_CMD >> $LOGS_FILE 2>&1" | crontab -
+  # Delete after x days job here.
 fi
 
-# Start crond if it's not running
+# Start crond if it's not running.
 pgrep crond > /dev/null 2>&1
 if [ $? -ne 0 ]; then
   /usr/sbin/crond -L /app/log/cron.log
 fi
 
-# Restart script as user "app:app"
+# Restart script as user "app:app".
 if [ "$(id -u)" -eq 0 ]; then
-  echo "Restarting $(basename "$0") as app:app"
   exec su-exec app:app "$0" "$@"
 fi
 
-echo "[INFO] Container started at $(date +"%F %r")" > "$LOGFILE"
-tail -F "$LOGFILE" /app/log/cron.log
+echo "[INFO] Running automatically (${CRON_TIME}), started at $(date +"%F %r")." > "$LOGS_FILE"
+tail -F "$LOGS_FILE" # Keeps terminal open and writes logs.
