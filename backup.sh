@@ -1,14 +1,20 @@
 #!/bin/sh
+cd /
 
-# Create variable for new backup zip.
-BACKUP_ZIP=/backups/$(date "+%F_%H.%M.%S").zip
+# Store current date in a variable.
+TIMESTAMP=$(date "+%F_%H-%M-%S")
 
-# Create variables for the files and directories to be zipped.
+# Store new backup archive location in a variable.
+BACKUP_LOCATION=/backups/$TIMESTAMP.tar.xz
+
+# Create variables for the files and directories to be archived.
 BACKUP_DB=db.sqlite3 # file
 BACKUP_RSA=rsa_key* # files
 BACKUP_CONFIG=config.json # file
 BACKUP_ATTACHMENTS=attachments # directory
 BACKUP_SENDS=sends # directory
 
-# Create a zip of the files and directories.
-cd /data && zip -r $BACKUP_ZIP $BACKUP_DB $BACKUP_RSA $BACKUP_CONFIG $BACKUP_ATTACHMENTS $BACKUP_SENDS && cd ..
+# Create an archive of the files and directories.
+echo "Starting backup at ${TIMESTAMP}..."
+cd /data && tar -Jcf $BACKUP_LOCATION $BACKUP_DB $BACKUP_RSA $BACKUP_CONFIG $BACKUP_ATTACHMENTS $BACKUP_SENDS 2>/dev/null && cd /
+echo "Backup completed at ${TIMESTAMP}."

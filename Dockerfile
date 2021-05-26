@@ -6,7 +6,7 @@ RUN addgroup -S app && adduser -S -G app app
 RUN apk add --no-cache \
     busybox-suid \
     su-exec \
-    zip \
+    xz \
     tzdata
 
 ENV CRON_TIME "* */12 * * *"
