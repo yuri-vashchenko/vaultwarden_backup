@@ -23,7 +23,7 @@ services:
   vaultwarden:
 	# Vaultwarden configuration here.
   backup:
-    image: jmqm/vaultwarden_backup
+    image: jmqm/vaultwarden_backup:latest
     container_name: vaultwarden_backup
     volumes:
       - "/vaultwarden_data_directory:/data:ro" # Read-only
