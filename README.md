@@ -1,5 +1,4 @@
-Backs up vaultwarden files and directories to `tar.xz` archives.
-Can be set to run automatically.
+Backs up vaultwarden files and directories to `tar.xz` archives automatically. `tar.xz` archives can be opened using data compression programs like [7-Zip](https://www.7-zip.org/) and [WinRAR](https://www.win-rar.com/).
 
 Files and directories that are backed up:
 - db.sqlite3
@@ -21,7 +20,7 @@ Pass `manual` to `docker run` or `docker-compose` as a `command`.
 ```
 services:
   vaultwarden:
-	# Vaultwarden configuration here.
+    # Vaultwarden configuration here.
   backup:
     image: jmqm/vaultwarden_backup:latest
     container_name: vaultwarden_backup
@@ -32,7 +31,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro" # Container uses date from host.
     environment:
       - DELETE_AFTER=30
-      - CRON_TIME=* */24 * * * # Runs every 24 hours.
+      - CRON_TIME=* */24 * * * # Runs at 12:00 AM.
       - UID=1024
       - GID=100
 ```
