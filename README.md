@@ -2,6 +2,7 @@ Backs up vaultwarden files and directories to `tar.xz` archives automatically. `
 
 Files and directories that are backed up:
 - db.sqlite3
+- config.json
 - rsa_key.der
 - rsa_key.pem
 - rsa_key.pub.der
