@@ -16,16 +16,16 @@ jobs:
       TAG: latest
 
     steps:
-      - name: Check out repo.
+      - name: Check out repo
         uses: actions/checkout@v2.3.4
 
-      - name: Log in to Docker Hub.
+      - name: Log in to Docker Hub
         uses: docker/login-action@v1.10.0
         with:
           username: ${{ env.USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       
-      - name: Update README and description.
+      - name: Update README and description
         uses: peter-evans/dockerhub-description@v2.4.3
         with:
           username: ${{ env.USERNAME }}
@@ -34,7 +34,7 @@ jobs:
           short-description: ${{ github.event.repository.description }}
           readme-filepath: ./README.md
 
-      - name: Build image and push to Docker hub.
+      - name: Build image and push to Docker hub
         id: docker_build
         uses: docker/build-push-action@v2.6.1
         with:
