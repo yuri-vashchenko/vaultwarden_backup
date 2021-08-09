@@ -1,0 +1,34 @@
+name: Dockerize
+
+# When to run.
+# In this case, whenever something is pushed to the 'main' branch.
+on:
+  push:
+    branches: [ main ]
+
+  # Allows this action to be run manually.
+  workflow_dispatch:
+
+# Instructions on what to do.
+# In this case, 'build' is the job and Ubuntu is the OS to run the job on.
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: jmqm/vaultwarden_backup:latest
