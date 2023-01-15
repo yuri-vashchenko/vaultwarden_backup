@@ -11,11 +11,14 @@ cd /data
 
 BACKUP_LOCATION="/backups/$(date +"%F_%H-%M-%S").${EXTENSION}"
 
-BACKUP_DB="db.sqlite3" # file
+BACKUP_DB="db.sqlite3.backup" # file
 BACKUP_RSA="rsa_key*" # files
 BACKUP_CONFIG="config.json" # file
 BACKUP_ATTACHMENTS="attachments" # directory
 BACKUP_SENDS="sends" # directory
+
+# Back up database.
+sqlite3 db.sqlite3 ".backup 'db.sqlite3.backup'"
 
 # Back up files and folders.
 tar -Jcf $BACKUP_LOCATION $BACKUP_DB $BACKUP_RSA $BACKUP_CONFIG $BACKUP_ATTACHMENTS $BACKUP_SENDS 2>/dev/null

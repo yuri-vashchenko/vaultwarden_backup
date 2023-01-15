@@ -5,9 +5,10 @@ RUN addgroup -S app && adduser -S -G app app
 
 RUN apk add --no-cache \
     busybox-suid \
+    sqlite \
     su-exec \
+    tzdata \
     xz \
-    tzdata
 
 ENV CRON_TIME "0 */12 * * *"
 ENV UID 100
